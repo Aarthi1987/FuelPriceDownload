@@ -32,68 +32,77 @@ namespace FuelPriceReadAPI
             .Build();
 
             //Ndays value is set in appSettings.json
+            
 
             int Ndays = Convert.ToInt32(Config.GetSection("Ndays").Value);
             using (var client = new WebClient())
             {
                 client.Headers.Add("Content-Type: application/json");
                 client.Headers.Add("Accept: application/json");
-
-                var prices = client.DownloadString(APIUrl);
-                List<FuelPrice> fuelPricesList = new List<FuelPrice>();
-                var apiResponse = JsonConvert.DeserializeObject<Root>(prices);
-
-                foreach (var i in apiResponse.series[0].data)
+                try
                 {
-                    DateTime convertedDate;
-                    if (DateTime.TryParseExact(Convert.ToString(i[0]),
-                    "yyyyMMdd", CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out convertedDate))
+
+                    var prices = client.DownloadString(APIUrl);
+                    List<FuelPrice> fuelPricesList = new List<FuelPrice>();
+                    var apiResponse = JsonConvert.DeserializeObject<Root>(prices);
+
+                    foreach (var i in apiResponse.series[0].data)
                     {
-                        //valid
+                        DateTime convertedDate;
+                        if (DateTime.TryParseExact(Convert.ToString(i[0]),
+                        "yyyyMMdd", CultureInfo.InvariantCulture,
+                          DateTimeStyles.None,
+                        out convertedDate))
+                        {
+                            //valid
+                        }
+
+                        // Add data only if the date is not older than Ndays 
+                        if (convertedDate > DateTime.Now.AddDays(-Ndays))
+                        {
+                            FuelPrice fuelprice = new FuelPrice();
+                            fuelprice.Date = Convert.ToString(i[0]);
+                            fuelprice.price = Convert.ToDouble(i[1]);
+                            fuelPricesList.Add(fuelprice);
+                        }
                     }
 
-                    // Add data only if the date is not older than Ndays 
-                    if (convertedDate > DateTime.Now.AddDays(-Ndays))
-                    {
-                        FuelPrice fuelprice = new FuelPrice();
-                        fuelprice.Date = Convert.ToString(i[0]);
-                        fuelprice.price = Convert.ToDouble(i[1]);
-                        fuelPricesList.Add(fuelprice);
-                    }
-                }
-
-                using (var db = new EFContext())
-                {
-                    //Delete the Data in the Database to enable loading fresh Data
-                    var itemsToDelete = db.Set<FuelPrice>();
-                    db.FuelPrices.RemoveRange(itemsToDelete);
-                    db.SaveChanges();
-                }
-
-                {
                     using (var db = new EFContext())
                     {
-                        foreach (var i in fuelPricesList)
+                        //Delete the Data in the Database to enable loading fresh Data
+                        var itemsToDelete = db.Set<FuelPrice>();
+                        db.FuelPrices.RemoveRange(itemsToDelete);
+                        db.SaveChanges();
+                    }
+
+                    {
+                        using (var db = new EFContext())
                         {
-                            var fuelPriceDb = db.FuelPrices
-                            .Where(c => c.Date == i.Date)
-                            .SingleOrDefault();
-                            FuelPrice fuelprice = new FuelPrice();
-                            fuelprice.Date = i.Date;
-                            fuelprice.price = i.price;
-                            //To avoid Duplicates
-                            if (fuelPriceDb == null)
-                                db.Add(fuelprice);
+                            foreach (var i in fuelPricesList)
+                            {
+                                var fuelPriceDb = db.FuelPrices
+                                .Where(c => c.Date == i.Date)
+                                .SingleOrDefault();
+                                FuelPrice fuelprice = new FuelPrice();
+                                fuelprice.Date = i.Date;
+                                fuelprice.price = i.price;
+                                //To avoid Duplicates
+                                if (fuelPriceDb == null)
+                                    db.Add(fuelprice);
+
+                            }
+                            db.SaveChanges();
 
                         }
-                        db.SaveChanges();
-
+                        Console.WriteLine("Downloading Fuel Prices at " + DateTime.Now);
                     }
-                    Console.WriteLine("Downloading Fuel Prices at " + DateTime.Now);
+                }
+                catch(JsonReaderException e)
+                {
+                    Console.WriteLine("The Data from the API is in incorrect format.{0} Exception caught.", e);
                 }
             }
         }
+
     }
 }

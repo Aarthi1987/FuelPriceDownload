@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\avina\\source\\repos\\DownloadFuelPrice\\FuelPriceProject.csproj": {}
+    "C:\\Users\\avina\\source\\repos\\FuelPriceDownload\\FuelPriceProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\avina\\source\\repos\\DownloadFuelPrice\\FuelPriceProject.csproj": {
+    "C:\\Users\\avina\\source\\repos\\FuelPriceDownload\\FuelPriceProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\avina\\source\\repos\\DownloadFuelPrice\\FuelPriceProject.csproj",
+        "projectUniqueName": "C:\\Users\\avina\\source\\repos\\FuelPriceDownload\\FuelPriceProject.csproj",
         "projectName": "FuelPriceProject",
-        "projectPath": "C:\\Users\\avina\\source\\repos\\DownloadFuelPrice\\FuelPriceProject.csproj",
+        "projectPath": "C:\\Users\\avina\\source\\repos\\FuelPriceDownload\\FuelPriceProject.csproj",
         "packagesPath": "C:\\Users\\avina\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\avina\\source\\repos\\DownloadFuelPrice\\obj\\",
+        "outputPath": "C:\\Users\\avina\\source\\repos\\FuelPriceDownload\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

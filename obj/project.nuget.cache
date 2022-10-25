@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "17V6pCfJjTccBm/SDl1otzEZ+/Ri4+qBKn7W6VCiTdoem6mHqBLLdb82Ee08Tm9W/AEdR5mc+eulmJQnS1rF3g==",
+  "dgSpecHash": "YxHD2oMQQ3bX3BEVtnurAMq7EXnLee4a5doterU5+3KPrxs5gvkMA1RXeIARKZtlFeYB79QqpxdY/q+iX3gsDg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\avina\\source\\repos\\DownloadFuelPrice\\FuelPriceProject.csproj",
+  "projectFilePath": "C:\\Users\\avina\\source\\repos\\FuelPriceDownload\\FuelPriceProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\avina\\.nuget\\packages\\cronos\\0.7.1\\cronos.0.7.1.nupkg.sha512",
     "C:\\Users\\avina\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
